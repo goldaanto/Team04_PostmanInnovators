@@ -1,0 +1,2387 @@
+{
+  "info": {
+    "_postman_id": "700f9a4e-19e9-46c9-b6b0-a24702af05a8",
+    "name": "Class_Module_Collection_Kapila",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53565875",
+    "_collection_link": "https://go.postman.co/collection/53565875-700f9a4e-19e9-46c9-b6b0-a24702af05a8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Positive Tests",
+          "item": [
+            {
+              "name": "User Sign In",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// Save token\r",
+                      "pm.environment.set(\"token\", res.token);\r",
+                      "\r",
+                      "// Validation\r",
+                      "pm.test(\"Login successful\", function (){ \r",
+                      "pm.response.to.have.status(200);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "packages": {},
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disabledSystemHeaders": {}
+              },
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n\"userLoginEmailId\": \"{{username}}\",\r\n\"password\": \"{{password}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Class_Module",
+      "item": [
+        {
+          "name": "Positive_Test_Cases",
+          "item": [
+            {
+              "name": "Staff ID creation",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "pm.environment.set(\"staffId\", res.user.userId);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"userFirstName\": \"Kapila\",\r\n  \"userLastName\": \"K\",\r\n  \"userLocation\": \"USA\",\r\n  \"userTimeZone\": \"EST\",\r\n  \"userVisaStatus\": \"H1B\",\r\n  \"userPhoneNumber\": \"+1 1234569896\",\r\n  \"userLogin\": {\r\n    \"loginStatus\": \"Active\",\r\n    \"userLoginEmail\": \"kapilarkm3@gmail.com\"\r\n  },\r\n  \"userRoleMaps\": [\r\n    {\r\n      \"roleId\": \"R02\",\r\n      \"userRoleStatus\": \"Active\"\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/roleStatus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roleStatus"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST Create Class",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response && pm.response.text() && pm.response.text().trim() !== \"\") {",
+                      "    try {",
+                      "        let res = pm.response.json();",
+                      "        if (res && res.csId) {",
+                      "            pm.environment.set(\"classId\", res.csId);",
+                      "        }",
+                      "    } catch (e) {",
+                      "        console.error(\"Failed to parse response JSON:\", e.message);",
+                      "    }",
+                      "} else {",
+                      "    console.warn(\"Response body is empty — skipping classId extraction.\");",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"batchId\":152,\"batchName\":\"DA_01\",\"classComments\":\"First class created through API\",\"classDate\":\"2026-04-20\",\"classDescription\":\"Introduction to API testing\",\"classNo\":1,\"classNotes\":\"Covered basics\",\"classRecordingPath\":\"\",\"classStaffId\":\"U105\",\"classTopic\":\"API Testing 11\",\"classStatus\":\"Active\",\"classScheduledDates\":[\"2026-04-20T10:00:00\"]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all classes list",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate fields\r",
+                      "pm.test(\"Class object has correct fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"csId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classTopic\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"batchId\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allClasses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allClasses"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Class Recordings by BatchId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Validate fields\r",
+                      "pm.test(\"Recording object has fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"csId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classRecordingPath\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/batchRecordings/152",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "batchRecordings",
+                    "152"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Class Details by Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate classId matches\r",
+                      "let expectedId = pm.environment.get(\"csId\");\r",
+                      "\r",
+                      "pm.test(\"ClassId matches the requested ID\", function () {\r",
+                      "    pm.expect(res[0].csId.toString()).to.eql(expectedId.toString());\r",
+                      "});\r",
+                      "\r",
+                      "// 5. Validate fields\r",
+                      "pm.test(\"Class object has correct fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"batchId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classTopic\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classDate\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classStaffId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classStatus\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/class/49",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "class",
+                    "49"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Classes by Class Topic",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate topic\r",
+                      "let expectedTopic = pm.environment.get(\"classTopic\");\r",
+                      "\r",
+                      "pm.test(\"Class topic matches\", function () {\r",
+                      "    pm.expect(res[0].classTopic).to.eql(expectedTopic);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classes/API Testing Basics ",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classes",
+                    "API Testing Basics "
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Classes by BatchId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate batchId\r",
+                      "let expectedBatch = pm.environment.get(\"batchId\");\r",
+                      "\r",
+                      "pm.test(\"BatchId matches\", function () {\r",
+                      "    pm.expect(res[0].batchId.toString()).to.eql(expectedBatch.toString());\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classesbyBatch/152",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classesbyBatch",
+                    "152"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Classes by Staff Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate staffId\r",
+                      "let expectedStaff = pm.environment.get(\"classStaffId\");\r",
+                      "\r",
+                      "pm.test(\"StaffId matches\", function () {\r",
+                      "    pm.expect(res[0].classStaffId).to.eql(expectedStaff);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classesByStaff/U105",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classesByStaff",
+                    "U105"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Recordings",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Validate fields\r",
+                      "pm.test(\"Recording object has correct fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"csId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classRecordingPath\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classrecordings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classrecordings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Class Recordings by Class Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Validate fields\r",
+                      "pm.test(\"Recording object has correct fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"csId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classRecordingPath\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classRecordings/49",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classRecordings",
+                    "49"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Upcoming Classes for Particular Student",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Response is array\r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    pm.expect(res).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// 3. Response is not empty\r",
+                      "pm.test(\"Response is not empty\", function () {\r",
+                      "    pm.expect(res.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// 4. Validate fields\r",
+                      "pm.test(\"Upcoming class object has correct fields\", function () {\r",
+                      "    pm.expect(res[0]).to.have.property(\"csId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"batchId\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classTopic\");\r",
+                      "    pm.expect(res[0]).to.have.property(\"classStatus\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/upcomingClasses/U04",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "upcomingClasses",
+                    "U04"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Download Class Recordings",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Validate fields\r",
+                      "pm.test(\"Download response has correct fields\", function () {\r",
+                      "    pm.expect(res).to.have.property(\"csId\");\r",
+                      "    pm.expect(res).to.have.property(\"classRecordingPath\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/download/49",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "download",
+                    "49"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Class Schedule by Class Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Validate updated class\r",
+                      "pm.test(\"Class updated successfully\", function () {\r",
+                      "    pm.expect(res).to.have.property(\"csId\");\r",
+                      "    pm.expect(res).to.have.property(\"classTopic\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-20\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing Basics 3\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-21T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/updateClass/48",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "updateClass",
+                    "48"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Class Recording path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Validate returned fields\r",
+                      "pm.test(\"Updated recording response has correct fields\", function () {\r",
+                      "    pm.expect(res).to.have.property(\"csId\");\r",
+                      "    pm.expect(res).to.have.property(\"classRecordingPath\");\r",
+                      "    pm.expect(res).to.have.property(\"classTopic\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n\"classRecordingPath\": \"https://drive.google.com/class1\",\r\n\"csId\": 50\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/updateClassrecording/50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "updateClassrecording",
+                    "50"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete class by class ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// 1. Status code\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// 2. Validate message\r",
+                      "pm.test(\"Delete success message\", function () {\r",
+                      "    pm.expect(JSON.stringify(res).toLowerCase()).to.include(\"success\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deleteByClass/212",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deleteByClass",
+                    "212"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Negative_test_cases",
+          "item": [
+            {
+              "name": "Duplicate Class with same body",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-20\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing 11\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-20T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with wrong batch Id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": \"15\",\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-20\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing Basics 4\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-21T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with same class Topic",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Class topic already exists\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": \"152\",\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-20\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing Basics 4\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-21T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with past date for class scheduled dates",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is not 200\", function () {\r",
+                      "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Invalid past date\", function () {\r",
+                      "    pm.expect(res).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-17\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-01-01T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with invalid class Staff Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is not 200\", function () {\r",
+                      "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Invalid staff ID\", function () {\r",
+                      "    pm.expect(res).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-17\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U1\",\r\n  \"classTopic\": \"API Testing Basics 5\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-01-01T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with skipped date",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Date is required\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": \"\",\r\n  \"batchName\": \"\",\r\n  \"classComments\": \"\",\r\n  \"classDate\": \"\",\r\n  \"classDescription\": \"\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"\",\r\n  \"classTopic\": \"\",\r\n  \"classStatus\": \"\",\r\n  \"classScheduledDates\": [\r\n    \"\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with invalid class number",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Invalid class number\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2027-21-04T00:00:00.000+00:00\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 2,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing \",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-20T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class without Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Unauthorized access\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2027-21-04T00:00:00.000+00:00\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 2,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing \",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-20T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with wrong file type",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is not 200\", function () {\r",
+                      "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Invalid file type\", function () {\r",
+                      "    pm.expect(res).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "xml"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class without staff ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Staff ID is required\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2027-21-04T00:00:00.000+00:00\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 2,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"\",\r\n  \"classTopic\": \"API Testing \",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-20T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create class with wrong method",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is not 200\", function () {\r",
+                      "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 152,\r\n  \"batchName\": \"\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2027-21-04T00:00:00.000+00:00\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing \",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-20T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/CreateClassSchedule",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "CreateClassSchedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all classes without token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Unauthorized access\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/allClasses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allClasses"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get classes by invalid batch Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Batch not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/classesbyBatch/111111111",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classesbyBatch",
+                    "111111111"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get class by invalid class Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Class not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/class/999999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "class",
+                    "999999"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all classes by Invalid Class Topic",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Class topic not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/classes/English",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classes",
+                    "English"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Batch recordings by Invalid Batch ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Recording not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/batchRecordings/111111",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "batchRecordings",
+                    "111111"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all classes by invalid Staff ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Staff not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/classesByStaff/U",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classesByStaff",
+                    "U"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all recordings by invalid authorization",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Unauthorized\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/classrecordings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classrecordings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get class recordings by wrong class ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Recording not found\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/classRecordings/99999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "classRecordings",
+                    "99999"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get download class recordings with wrong class ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is not 200\", function () {\r",
+                      "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/download/111111",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "download",
+                    "111111"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all upcoming class for a student with empty token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Unauthorized access\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/upcomingClasses/u-6785",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "upcomingClasses",
+                    "u-6785"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update class with invalid class Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Class not found for update\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"batchId\": 2222222,\r\n  \"batchName\": \"DA_01\",\r\n  \"classComments\": \"First class created through API\",\r\n  \"classDate\": \"2026-04-20\",\r\n  \"classDescription\": \"Introduction to API testing\",\r\n  \"classNo\": 1,\r\n  \"classNotes\": \"Covered basics\",\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"classStaffId\": \"U105\",\r\n  \"classTopic\": \"API Testing Basics 4\",\r\n  \"classStatus\": \"Active\",\r\n  \"classScheduledDates\": [\r\n    \"2026-04-21T10:00:00\"\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/updateClass/2222222",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "updateClass",
+                    "2222222"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update class recording with invalid class Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Recording not found for update\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"classRecordingPath\": \"https://example.com/class-recording\",\r\n  \"csId\": 999999\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/updateClassrecording/999999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "updateClassrecording",
+                    "999999"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete class by wrong class ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Class not found for delete\", function () {\r",
+                      "    pm.expect(res.message).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deleteByClass/8888",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deleteByClass",
+                    "8888"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
