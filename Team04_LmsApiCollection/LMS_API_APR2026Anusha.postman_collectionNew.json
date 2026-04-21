@@ -1,0 +1,1178 @@
+{
+  "info": {
+    "_postman_id": "0dcfb084-e27f-43c2-af6c-a6c0d864158e",
+    "name": "LMS_API_APR2026",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54116787",
+    "_collection_link": "https://go.postman.co/collection/54116787-0dcfb084-e27f-43c2-af6c-a6c0d864158e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User Module",
+      "item": [
+        {
+          "name": "Positive",
+          "item": [
+            {
+              "name": "login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let res = pm.response.json();\r",
+                      "\r",
+                      "// Save token\r",
+                      "pm.environment.set(\"token\", res.token);\r",
+                      "\r",
+                      "// Validation\r",
+                      "pm.test(\"Login successful\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"userLoginEmailId\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "createUser",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let jsonData = pm.response.json();\r",
+                      "pm.environment.set(\"userId\", jsonData.user.userId);\r",
+                      "\r",
+                      "console.log(\"Saved User ID:\", jsonData.user.userId);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"userComments\": \"INACTIVE\",\r\n  \"userFirstName\": \"Jan\",\r\n  \"userLastName\": \"M\",\r\n  \"userPhoneNumber\": \"+1 7542004400\",\r\n  \"userLocation\": \"California\",\r\n  \"userTimeZone\": \"PST\",\r\n  \"userVisaStatus\": \"US-Citizen\",\r\n  \"userLogin\": {\r\n    \"loginStatus\": \"Active\",\r\n    \"userLoginEmail\": \"\"\r\n  },\r\n  \"userRoleMaps\": [\r\n    {\r\n      \"roleId\": \"R03\",\r\n      \"userRoleStatus\": \"Active\"\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/roleStatus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roleStatus"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getAllUsers",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let users = pm.response.json();\r",
+                      "\r",
+                      "// Validate all users are active\r",
+                      "pm.test(\"All users are active\", function () {\r",
+                      "    users.forEach(user => {\r",
+                      "        pm.expect(user.userComments).to.eql(\"ACTIVE\");\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"Active Users from API:\", users);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://lms-hackathon-api-april-2026-8b55b53c8fab.hero\nkuapp.com/lms/fetch-emails",
+                  "protocol": "https",
+                  "host": [
+                    "lms-hackathon-api-april-2026-8b55b53c8fab",
+                    "hero\nkuapp",
+                    "com"
+                  ],
+                  "path": [
+                    "lms",
+                    "fetch-emails"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getByUserId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"UserId matches\", function () {\r",
+                      "    pm.expect(data.user.userId).to.eql(pm.environment.get(\"userId\"));\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{userId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{userId}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getUserswithRole",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Status check\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// Get response\r",
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "// // Basic validations\r",
+                      "// pm.test(\"Response is array\", function () {\r",
+                      "//     pm.expect(data).to.be.an(\"array\");\r",
+                      "// });\r",
+                      "\r",
+                      "pm.test(\"Users exist\", function () {\r",
+                      "    pm.expect(data.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "// Role validation\r",
+                      "pm.test(\"Valid roleIds\", function () {\r",
+                      "    data.forEach(user => {\r",
+                      "        pm.expect([\"R01\", \"R02\", \"R03\"]).to.include(user.roleId);\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "// Schema validation\r",
+                      "pm.test(\"Schema is valid\", function () {\r",
+                      "    const schema = {\r",
+                      "        type: \"array\",\r",
+                      "        items: {\r",
+                      "            type: \"object\",\r",
+                      "            required: [\r",
+                      "                \"roleId\",\r",
+                      "                \"roleName\",\r",
+                      "                \"userId\",\r",
+                      "                \"userFirstName\",\r",
+                      "                \"userLastName\",\r",
+                      "                \"userRoleStatus\",\r",
+                      "                \"userLocation\",\r",
+                      "                \"userTimeZone\",\r",
+                      "                \"userVisaStatus\",\r",
+                      "                \"userLoginEmail\"\r",
+                      "            ],\r",
+                      "            properties: {\r",
+                      "                roleId: { type: \"string\" },\r",
+                      "                roleName: { type: \"string\" },\r",
+                      "                userId: { type: \"string\" },\r",
+                      "                userFirstName: { type: \"string\" },\r",
+                      "                userLastName: { type: \"string\" },\r",
+                      "                userRoleStatus: { type: \"string\" },\r",
+                      "                userLocation: { type: \"string\" },\r",
+                      "                userTimeZone: { type: \"string\" },\r",
+                      "                userVisaStatus: { type: \"string\" },\r",
+                      "                userLoginEmail: { type: \"string\" }\r",
+                      "            }\r",
+                      "        }\r",
+                      "    };\r",
+                      "\r",
+                      "    pm.expect(data).to.have.jsonSchema(schema);\r",
+                      "});\r",
+                      "\r",
+                      "// Debug log\r",
+                      "console.log(\"Users with Roles:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/roles",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getCountofAllUsers",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Counts are valid\", function () {\r",
+                      "    data.forEach(item => {\r",
+                      "        pm.expect(item.count).to.be.at.least(0);\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"User Counts:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/byStatus?Id=all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "byStatus"
+                  ],
+                  "query": [
+                    {
+                      "key": "Id",
+                      "value": "all"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getAllActiveUsers",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let users = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// // Check response is array\r",
+                      "// pm.test(\"Response is array\", function () {\r",
+                      "//     pm.expect(users).to.be.an(\"array\");\r",
+                      "// });\r",
+                      "\r",
+                      "// Check users exist\r",
+                      "pm.test(\"Active users exist\", function () {\r",
+                      "    pm.expect(users.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"Active Users:\", users);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/activeUsers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "activeUsers"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getEmailofActiveStatus",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let emails = pm.response.json();\r",
+                      "\r",
+                      "// Check it's an array\r",
+                      "// pm.test(\"Response is array\", function () {\r",
+                      "//     pm.expect(emails).to.be.an(\"array\");\r",
+                      "// });\r",
+                      "\r",
+                      "// Check emails exist\r",
+                      "pm.test(\"Emails are present\", function () {\r",
+                      "    pm.expect(emails.length).to.be.above(0);\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"Active User Emails:\", emails);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/fetch-emails",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "fetch-emails"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getAllRoles",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let roles = pm.response.json();\r",
+                      "\r",
+                      "\r",
+                      "\r",
+                      "// Validate required roles exist\r",
+                      "let roleIds = roles.map(r => r.roleId);\r",
+                      "\r",
+                      "pm.test(\"All required roles present\", function () {\r",
+                      "    pm.expect(roleIds).to.include(\"R01\");\r",
+                      "    pm.expect(roleIds).to.include(\"R02\");\r",
+                      "    pm.expect(roleIds).to.include(\"R03\");\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"Roles:\", roles);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/roles",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteUsertoInactive",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"User marked inactive\", function () {\r",
+                      "    pm.expect(data.success).to.eql(true);\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"Delete Response:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{userId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{userId}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getCountofAllUsers1",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "// Handle both array and object response\r",
+                      "pm.test(\"Counts are valid\", function () {\r",
+                      "    if (Array.isArray(data)) {\r",
+                      "        data.forEach(item => {\r",
+                      "            pm.expect(item.count).to.be.at.least(0);\r",
+                      "        });\r",
+                      "    } else {\r",
+                      "        pm.expect(data.count).to.be.at.least(0);\r",
+                      "    }\r",
+                      "});\r",
+                      "\r",
+                      "// Debug per iteration\r",
+                      "console.log(\"RoleId:\", pm.iterationData.get(\"roleId\"));\r",
+                      "console.log(\"Response:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}GET /users?roleId={{roleId}}",
+                  "host": [
+                    "{{baseUrl}}GET "
+                  ],
+                  "path": [
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "roleId",
+                      "value": "{{roleId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getStaffUserCountR02",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Counts are valid\", function () {\r",
+                      "    data.forEach(item => {\r",
+                      "        pm.expect(item.count).to.be.at.least(0);\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"User Counts:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/byStatus?Id=R02",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "byStatus"
+                  ],
+                  "query": [
+                    {
+                      "key": "Id",
+                      "value": "R02"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getStudentUserCountR03",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Counts are valid\", function () {\r",
+                      "    data.forEach(item => {\r",
+                      "        pm.expect(item.count).to.be.at.least(0);\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "console.log(\"User Counts:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/byStatus?Id=R03",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "byStatus"
+                  ],
+                  "query": [
+                    {
+                      "key": "Id",
+                      "value": "R03"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getUserProgramId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "let data = pm.response.json();\r",
+                      "\r",
+                      "// Check response is array\r",
+                      "pm.test(\"Response is array\", function () {\r",
+                      "    pm.expect(data).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "// Optional: print users\r",
+                      "console.log(\"Users for Program:\", data);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/programs/307",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "programs",
+                    "307"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getUserBatchId",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/programBatch/{{batchId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "programBatch",
+                    "{{batchId}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Negative",
+          "item": [
+            {
+              "name": "createCreateWithoutFirstname",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n\"userComments\": \"INACTIVE\",\r\n\"userEduPg\": \"MCA\",\r\n\"userEduUg\":\"BCA\",\r\n//\"userFirstName\":\"\",\r\n\"userLastName\": \"L\",\r\n\"userMiddleName\": \"K\",\r\n\"userPhoneNumber\": \"+1 5643782960\",\r\n\"userLinkedinUrl\": \"www.linkedin.com/Ka\",\r\n\"userLocation\": \"Michigan\",\r\n\"userLogin\": {\r\n\"loginStatus\" : \"Inactive\",\r\n\"userLoginEmail\": \"kam@gmail.com\"\r\n},\r\n\"userRoleMaps\": [\r\n{\r\n\"roleId\": \"R02\",\r\n\"userRoleStatus\": \"Active\"\r\n}\r\n],\r\n\"userTimeZone\": \"CST\",\r\n\"userVisaStatus\": \"H1B\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/roleStatus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roleStatus"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "cerateUserInvalidEmailFormat",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n\"userComments\": \"ACTIVE\",\r\n\"userEduPg\": \"MSC\",\r\n\"userEduUg\":\"BSC\",\r\n\"userFirstName\":\"Anu\",\r\n\"userLastName\": \"G\",\r\n\"userMiddleName\": \"Y\",\r\n\"userPhoneNumber\": \"+1 5673825467\",\r\n\"userLinkedinUrl\": \"www.linkedin.com/anu\",\r\n\"userLocation\": \"North Carolina\",\r\n\"userLogin\": {\r\n\"loginStatus\" : \"Active\",\r\n\"userLoginEmail\": \"anu@test.com\"\r\n},\r\n\"userRoleMaps\": [\r\n{\r\n\"roleId\": \"R03\",\r\n\"userRoleStatus\": \"Active\"\r\n}\r\n],\r\n\"userTimeZone\": \"String\",\r\n\"userVisaStatus\": \"String\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/roleStatus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roleStatus"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "createUserWithDiffTimeZone",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n\"userComments\": \"Active\",\r\n\"userEduPg\": \"ME\",\r\n\"userEduUg\":\"BE\",\r\n\"userFirstName\":\"Ram\",\r\n\"userLastName\": \"G\",\r\n\"userMiddleName\": \"R\",\r\n\"userPhoneNumber\": \"+1 2345678900\",\r\n\"userLinkedinUrl\": \"www.linkedin.com/ram\",\r\n\"userLocation\": \"Atlanta\",\r\n\"userLogin\": {\r\n\"loginStatus\" : \"Active\",\r\n\"userLoginEmail\": \"ram@gmail.com\"\r\n},\r\n\"userRoleMaps\": [\r\n{\r\n\"roleId\": \"R02\",\r\n\"userRoleStatus\": \"Active\"\r\n}\r\n],\r\n\"userTimeZone\": \"GST\",\r\n\"userVisaStatus\": \"H4\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/roleStatus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "roleStatus"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "unAuthorizedWithInvalidToken",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "jeijsdfsdnfjd",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "inValidEndPoint",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/use",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "use"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "ValidEmailFormatFetch",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}[]",
+                  "host": [
+                    "{{baseUrl}}[]"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "inValidUserId",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "123"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "countofActiveuserwithInvalidEndpoint",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/byStatus?id=R04",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "byStatus"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "R04"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getUseremailNegativescenario",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "New Folder",
+          "item": []
+        }
+      ]
+    },
+    {
+      "name": "New Folder",
+      "item": []
+    }
+  ]
+}
