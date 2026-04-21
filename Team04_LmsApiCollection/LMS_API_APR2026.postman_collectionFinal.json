@@ -1,0 +1,1845 @@
+{
+  "info": {
+    "_postman_id": "1deb3bc7-8a51-4fb5-bbab-bf0f5608e4b8",
+    "name": "LMS_API_APR2026",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54116787",
+    "_collection_link": "https://go.postman.co/collection/49904469-1deb3bc7-8a51-4fb5-bbab-bf0f5608e4b8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "User Sign In",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();",
+                  "",
+                  "// Save token",
+                  "pm.environment.set(\"token\", res.token);",
+                  "",
+                  "// Validation",
+                  "pm.test(\"Login successful\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userLoginEmailId\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CreateRequest",
+      "item": [
+        {
+          "name": "Create Program - Valid Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains created program\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"programId\", jsonData.programId);",
+                  "    console.log(\"lllllllllll\", pm.environment.get(\"programId\"));",
+                  "    console.log(jsonData.programId);",
+                  "    pm.environment.set(\"programName\", jsonData.programName);",
+                  "    pm.expect(jsonData).to.have.property('programId');",
+                  "    pm.expect(jsonData).to.have.property('programName');",
+                  "    pm.expect(jsonData).to.have.property('programDescription');",
+                  "    pm.expect(jsonData).to.have.property('programStatus');",
+                  "    pm.expect(jsonData).to.have.property('creationTime');",
+                  "    pm.expect(jsonData).to.have.property('lastModTime');",
+                  "});",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"programName\": \"{{programName}}\",\n  \"programDescription\": \"{{programDescription}}\",\n  \"programStatus\": \"{{programStatus}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/saveprogram",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "saveprogram"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateBatch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains created program\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.environment.set(\"batchId\", jsonData.batchId);    \r",
+                  "   \r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property('batchId');\r",
+                  "    pm.expect(jsonData).to.have.property('batchName');\r",
+                  "    pm.expect(jsonData).to.have.property('batchDescription');\r",
+                  "    pm.expect(jsonData).to.have.property('batchStatus');\r",
+                  "    pm.expect(jsonData).to.have.property('batchNoOfClasses');\r",
+                  "    pm.expect(jsonData).to.have.property('programId');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"batchDescription\": \"{{batchDescription}}\",\r\n\"batchName\": \"{{batchName}}\",\r\n\"batchNoOfClasses\": {{batchNoOfClasses}},\r\n\"batchStatus\": \"{{batchStatus}}\",\r\n\"programId\": {{programId}},\r\n\"programName\": \"{{programName}}\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createStaff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains created Staff User\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "   pm.environment.set(\"staffId\", jsonData.user.userId);  \r",
+                  "   \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userComments\": \"{{staffComments}}\",\r\n  \"userFirstName\": \"{{staffFirstName}}\",\r\n  \"userLastName\": \"{{staffLastName}}\",\r\n  \"userPhoneNumber\": \"{{staffPhoneNumber}}\",\r\n  \"userLocation\": \"{{staffLocation}}\",\r\n  \"userTimeZone\": \"{{staffTimeZone}}\",\r\n  \"userVisaStatus\": \"{{staffVisaStatus}}\",\r\n  \"userLogin\": {\r\n    \"loginStatus\": \"{{staffLoginStatus}}\",\r\n    \"userLoginEmail\": \"{{staffLoginEmail}}\"\r\n  },\r\n  \"userRoleMaps\": [\r\n    {\r\n      \"roleId\": \"{{staffroleId}}\",\r\n      \"userRoleStatus\": \"{{staffRoleStatus}}\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/roleStatus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "roleStatus"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains created User\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "   pm.environment.set(\"userId\", jsonData.user.userId);  \r",
+                  "   \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userComments\": \"{{userComments}}\",\r\n  \"userFirstName\": \"{{userFirstName}}\",\r\n  \"userLastName\": \"{{userLastName}}\",\r\n  \"userPhoneNumber\": \"{{userPhoneNumber}}\",\r\n  \"userLocation\": \"{{userLocation}}\",\r\n  \"userTimeZone\": \"{{userTimeZone}}\",\r\n  \"userVisaStatus\": \"{{userVisaStatus}}\",\r\n  \"userLogin\": {\r\n    \"loginStatus\": \"{{loginStatus}}\",\r\n    \"userLoginEmail\": \"{{userLoginEmail}}\"\r\n  },\r\n  \"userRoleMaps\": [\r\n    {\r\n      \"roleId\": \"{{userroleId}}\",\r\n      \"userRoleStatus\": \"{{userRoleStatus}}\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/roleStatus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "roleStatus"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createAdmin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains created User\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "   pm.environment.set(\"userId\", jsonData.user.userId);  \r",
+                  "   \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userComments\": \"{{adminUserComments}}\",\r\n  \"userFirstName\": \"{{adminUserFirstName}}\",\r\n  \"userLastName\": \"{{adminUserLastName}}\",\r\n  \"userPhoneNumber\": \"{{adminUserPhoneNumber}}\",\r\n  \"userLocation\": \"{{adminUserLocation}}\",\r\n  \"userTimeZone\": \"{{adminUserTimeZone}}\",\r\n  \"userVisaStatus\": \"{{adminUserVisaStatus}}\",\r\n  \"userLogin\": {\r\n    \"loginStatus\": \"{{adminUserLoginStatus}}\",\r\n    \"userLoginEmail\": \"{{adminUserLoginEmail}}\"\r\n  },\r\n  \"userRoleMaps\": [\r\n    {\r\n      \"roleId\": \"{{adminUserroleId}}\",\r\n      \"userRoleStatus\": \"{{adminUserRoleStatus}}\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/roleStatus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "roleStatus"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createClasses",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Parse the stored string back to real array\r",
+                  "let dates = JSON.parse(pm.environment.get(\"classScheduledDates\"));\r",
+                  "\r",
+                  "// Set as proper array for request body\r",
+                  "pm.variables.set(\"datesArray\", JSON.stringify(dates));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains created Class\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.environment.set(\"csId\", jsonData.csId);\r",
+                  "    console.log(\"lllllllllll\", pm.environment.get(\"csId\"));\r",
+                  "    console.log(jsonData.programId);\r",
+                  "   \r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"batchId\": \"{{batchId}}\",\r\n\"classComments\": \"{{classComments}}\",\r\n\"classDate\": \"{{classDate}}\",\r\n\"classDescription\": \"{{classDescription}}\",\r\n\"classNo\": {{classNo}},\r\n\"classNotes\": \"{{classNotes}}\",\r\n\"classRecordingPath\": \"{{classRecordingPath}}\",\r\n\"classStaffId\": \"{{staffId}}\",\r\n\"classTopic\": \"{{classTopic}}\",\r\n\"classScheduledDates\": {{datesArray}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/CreateClassSchedule",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "CreateClassSchedule"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "UpdateRequest",
+      "item": [
+        {
+          "name": "Update Program by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();",
+                  "",
+                  "// 1. Status validation",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Validate programId (chaining check)",
+                  "pm.test(\"ProgramId matches request\", function () {",
+                  "    pm.expect(res.programId.toString()).to.eql(pm.environment.get(\"programId\").toString());",
+                  "});",
+                  "",
+                  "// 3. Validate updated values",
+                  "pm.test(\"Program description updated\", function () {",
+                  "    pm.expect(res.programDescription).to.eql(\"Updated via ID\");",
+                  "});",
+                  "",
+                  "// 4. Validate required fields",
+                  "pm.test(\"Response has all fields\", function () {",
+                  "    pm.expect(res).to.have.property(\"programName\");",
+                  "    pm.expect(res).to.have.property(\"programStatus\");",
+                  "    pm.expect(res).to.have.property(\"creationTime\");",
+                  "    pm.expect(res).to.have.property(\"lastModTime\");",
+                  "});",
+                  "",
+                  "// 5. Store updated timestamp (optional chaining)",
+                  "pm.environment.set(\"lastModTime\", res.lastModTime);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"programName\": \"{{programName}}\",\n  \"programDescription\": \"Updated via ID\",\n  \"programStatus\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/putprogram/{{programId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "putprogram",
+                "{{programId}}"
+              ]
+            },
+            "description": "Update program by program ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Program by Name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();",
+                  "",
+                  "// 1. Status check",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Validate updated response",
+                  "pm.test(\"Program name matches\", function () {",
+                  "    pm.expect(res.programName).to.eql(pm.environment.get(\"programName\"));",
+                  "});",
+                  "",
+                  "// 3. Validate update happened",
+                  "pm.test(\"Description updated\", function () {",
+                  "    pm.expect(res.programDescription).to.eql(\"Updated Description\");",
+                  "});",
+                  "",
+                  "// 4. Save updated timestamp (optional chaining)",
+                  "pm.environment.set(\"lastModTime\", res.lastModTime);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"programName\": \"{{programName}}\",\n  \"programDescription\": \"Updated Description\",\n  \"programStatus\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/program/{{programName}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "program",
+                "{{programName}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateBatchByBatchId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status Code Check\r",
+                  "pm.test(\"Status code is 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "// 2. Response Time Check (Performance)\r",
+                  "pm.test(\"Response time is less than 800ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+                  "});\r",
+                  "\r",
+                  "// 3. Data Integrity Check\r",
+                  "const jsonData = pm.response.json();\r",
+                  "const sentBatchName = pm.collectionVariables.get(\"batchName\") || pm.environment.get(\"batchName\");\r",
+                  "\r",
+                  "pm.test(\"Response matches updated Batch Name\", function () {\r",
+                  "    // This ensures the server actually saved the unique name your Pre-request script generated\r",
+                  "    pm.expect(jsonData.batchName).to.eql(sentBatchName);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify Batch Status is Active\", function () {\r",
+                  "    pm.expect(jsonData.batchStatus).to.eql(\"Active\");\r",
+                  "});\r",
+                  "\r",
+                  "// 4. Log the result for debugging\r",
+                  "console.log(\"Updated Batch ID: \" + jsonData.batchId + \" with Name: \" + jsonData.batchName);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"batchDescription\": \"{{batchDescription}}\",\r\n\"batchId\": \"{{batchId}}\",\r\n\"batchName\": \"{{batchName}}\",\r\n\"batchNoOfClasses\": {{batchNoOfClasses}},\r\n\"batchStatus\": \"{{batchStatus}}\",\r\n\"programId\": \"{{programId}}\",\r\n\"programName\": \"{{programName}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches/{{batchId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "{{batchId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateUserByUserId Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "",
+                  "// 1. Status code is 200",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response time is less than 2000ms",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// 3. Response has a JSON body",
+                  "pm.test(\"Response has a JSON body\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "// 4. Response contains userId field",
+                  "pm.test(\"Response contains userId field\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property(\"userId\");",
+                  "});",
+                  "",
+                  "// 5. userFirstName matches the value sent in the request body",
+                  "pm.test(\"userFirstName matches request value\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.userFirstName).to.eql(pm.environment.get(\"userFirstName\"));",
+                  "});",
+                  "",
+                  "// 6. userLastName matches the value sent in the request body",
+                  "pm.test(\"userLastName matches request value\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.userLastName).to.eql(pm.environment.get(\"userLastName\"));",
+                  "});",
+                  "",
+                  "// 7. userLoginEmail matches the value sent in the request body",
+                  "pm.test(\"userLoginEmail matches request value\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.userLoginEmail).to.eql(pm.environment.get(\"userLoginEmail\"));",
+                  "});",
+                  "",
+                  "// 8. Response body contains all expected fields",
+                  "pm.test(\"Response body contains all expected fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const expectedFields = [",
+                  "        \"userId\", \"userFirstName\", \"userLastName\", \"userMiddleName\",",
+                  "        \"userPhoneNumber\", \"userLocation\", \"userTimeZone\", \"userLinkedinUrl\",",
+                  "        \"userEduUg\", \"userEduPg\", \"userComments\", \"userVisaStatus\", \"userLoginEmail\"",
+                  "    ];",
+                  "    expectedFields.forEach(function (field) {",
+                  "        pm.expect(jsonData).to.have.property(field);",
+                  "    });",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userComments\": \"{{userComments}}\",\r\n  \"userEduPg\": \"{{userEduPg}}\",\r\n  \"userEduUg\": \"{{userEduUg}}\",\r\n  \"userFirstName\": \"{{userFirstName}}\",\r\n  \"userId\": \"{{userId}}\",\r\n  \"userLastName\": \"{{userLastName}}\",\r\n  \"userMiddleName\": \"{{userMiddleName}}\",\r\n  \"userLinkedinUrl\": \"{{userLinkedinUrl}}\",\r\n  \"userLocation\": \"{{userLocation}}\",\r\n  \"userLoginEmail\": \"{{userLoginEmail}}\",\r\n  \"userPhoneNumber\": \"{{userPhoneNumber}}\",\r\n  \"userTimeZone\": \"{{userTimeZone}}\",\r\n  \"userVisaStatus\": \"{{userVisaStatus}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/users/{{userid}}",
+              "host": [
+                "{{baseurl}}"
+              ],
+              "path": [
+                "users",
+                "{{userid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateClassRecordingPath",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"classRecordingPath\": \"{{classRecordingPath}}\",\r\n\"csId\": {{csId}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/updateClassrecording/{{csId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "updateClassrecording",
+                "{{csId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GetRequest",
+      "item": [
+        {
+          "name": "Get All Programs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Parse response",
+                  "let res = pm.response.json();",
+                  "",
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response is array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    pm.expect(res).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 3. Validate structure of first object (if exists)",
+                  "if (res.length > 0) {",
+                  "    pm.test(\"Program object has required fields\", function () {",
+                  "        pm.expect(res[0]).to.have.property(\"programId\");",
+                  "        pm.expect(res[0]).to.have.property(\"programName\");",
+                  "        pm.expect(res[0]).to.have.property(\"programDescription\");",
+                  "        pm.expect(res[0]).to.have.property(\"programStatus\");",
+                  "        pm.expect(res[0]).to.have.property(\"creationTime\");",
+                  "        pm.expect(res[0]).to.have.property(\"lastModTime\");",
+                  "    });",
+                  "}",
+                  "",
+                  "// 4. Check if your created program exists (chaining validation)",
+                  "let createdProgramId = pm.environment.get(\"programId\");",
+                  "",
+                  "let found = res.some(program => program.programId == createdProgramId);",
+                  "",
+                  "pm.test(\"Created program is present in list\", function () {",
+                  "    pm.expect(found).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/allPrograms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "allPrograms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Program by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();",
+                  "",
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response is array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    pm.expect(res).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 3. Array should have at least one item",
+                  "pm.test(\"Response is not empty\", function () {",
+                  "    pm.expect(res.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "// 4. Validate returned programId matches stored one",
+                  "let expectedId = pm.environment.get(\"programId\");",
+                  "",
+                  "pm.test(\"ProgramId matches the requested ID\", function () {",
+                  "    pm.expect(res[0].programId.toString()).to.eql(expectedId.toString());",
+                  "});",
+                  "",
+                  "// 5. Validate fields",
+                  "pm.test(\"Program object has correct fields\", function () {",
+                  "    pm.expect(res[0]).to.have.property(\"programName\");",
+                  "    pm.expect(res[0]).to.have.property(\"programDescription\");",
+                  "    pm.expect(res[0]).to.have.property(\"programStatus\");",
+                  "    pm.expect(res[0]).to.have.property(\"creationTime\");",
+                  "    pm.expect(res[0]).to.have.property(\"lastModTime\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/programs/{{programId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "programs",
+                "{{programId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Programs With Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = pm.response.json();",
+                  "",
+                  "// 1. Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response is array",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    pm.expect(res).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 3. Validate program structure",
+                  "if (res.length > 0) {",
+                  "",
+                  "    pm.test(\"Program object has required fields\", function () {",
+                  "        pm.expect(res[0]).to.have.property(\"programId\");",
+                  "        pm.expect(res[0]).to.have.property(\"programName\");",
+                  "        pm.expect(res[0]).to.have.property(\"programDescription\");",
+                  "        pm.expect(res[0]).to.have.property(\"programStatus\");",
+                  "        pm.expect(res[0]).to.have.property(\"programUsers\");",
+                  "        pm.expect(res[0]).to.have.property(\"creationTime\");",
+                  "        pm.expect(res[0]).to.have.property(\"lastModTime\");",
+                  "    });",
+                  "",
+                  "    // 4. Validate programUsers is array",
+                  "    pm.test(\"programUsers is an array\", function () {",
+                  "        pm.expect(res[0].programUsers).to.be.an(\"array\");",
+                  "    });",
+                  "",
+                  "    // 5. If users exist → validate user structure",
+                  "    if (res[0].programUsers.length > 0) {",
+                  "",
+                  "        pm.test(\"User object has required fields\", function () {",
+                  "            let user = res[0].programUsers[0];",
+                  "",
+                  "            pm.expect(user).to.have.property(\"userId\");",
+                  "            pm.expect(user).to.have.property(\"userFirstName\");",
+                  "            pm.expect(user).to.have.property(\"userLastName\");",
+                  "            pm.expect(user).to.have.property(\"userPhoneNumber\");",
+                  "            pm.expect(user).to.have.property(\"userLocation\");",
+                  "            pm.expect(user).to.have.property(\"userTimeZone\");",
+                  "            pm.expect(user).to.have.property(\"userVisaStatus\");",
+                  "            pm.expect(user).to.have.property(\"userLoginEmail\");",
+                  "        });",
+                  "    }",
+                  "}",
+                  "",
+                  "// 6. Chaining validation (your created program exists) (not required here)",
+                  "// let createdProgramId = pm.environment.get(\"programId\");",
+                  "",
+                  "// let found = res.some(p => p.programId == createdProgramId);",
+                  "",
+                  "// pm.test(\"Created program exists in program list\", function () {",
+                  "//     pm.expect(found).to.be.true;",
+                  "// });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/allProgramsWithUsers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "allProgramsWithUsers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllUsers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "let users = pm.response.json();\r",
+                  "\r",
+                  "//Schema validation\r",
+                  "const schema = {\r",
+                  "    type: \"array\",\r",
+                  "    items: {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\r",
+                  "            \"userId\",\r",
+                  "            \"userFirstName\",\r",
+                  "            \"userLastName\",\r",
+                  "            \"userComments\"\r",
+                  "        ],\r",
+                  "        properties: {\r",
+                  "            userId: { type: \"string\" },\r",
+                  "            userFirstName: { type: \"string\" },\r",
+                  "            userLastName: { type: \"string\" },\r",
+                  "            userMiddleName: { type: [\"string\", \"null\"] },\r",
+                  "            userPhoneNumber: { type: \"string\" },\r",
+                  "            userLocation: { type: \"string\" },\r",
+                  "            userTimeZone: { type: \"string\" },\r",
+                  "            userLinkedinUrl: { type: \"string\" },\r",
+                  "            userEduUg: { type: \"string\" },\r",
+                  "            userEduPg: { type: \"string\" },\r",
+                  "            userComments: { type: \"string\" },\r",
+                  "            userVisaStatus: { type: \"string\" },\r",
+                  "            userLoginEmail: { type: \"string\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema validation for users list\", function () {\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "// Validate all users are active\r",
+                  "pm.test(\"All users are active\", function () {\r",
+                  "    users.forEach(user => {\r",
+                  "        pm.expect(user.userComments).to.eql(\"ACTIVE\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "console.log(\"Active Users from API:\", users);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllActiveUsers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let users = pm.response.json();\r",
+                  "\r",
+                  "//Status check\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "//Schema validation\r",
+                  "const schema = {\r",
+                  "    type: \"array\",\r",
+                  "    items: {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\r",
+                  "            \"userId\",\r",
+                  "            \"userFirstName\",\r",
+                  "            \"userLastName\",\r",
+                  "            \"userMiddleName\",\r",
+                  "            \"userPhoneNumber\",\r",
+                  "            \"userLocation\",\r",
+                  "            \"userTimeZone\",\r",
+                  "            \"userLinkedinUrl\",\r",
+                  "            \"userEduPg\",\r",
+                  "            \"userEduUg\",\r",
+                  "            \"userComments\",\r",
+                  "            \"userVisaStatus\",\r",
+                  "            \"userLoginEmail\"\r",
+                  "        ],\r",
+                  "        properties: {\r",
+                  "            userId: { type: \"string\" },\r",
+                  "            userFirstName: { type: \"string\" },\r",
+                  "            userLastName: { type: \"string\" },\r",
+                  "            userMiddleName: { type: [\"string\", \"null\"] },\r",
+                  "            userPhoneNumber: { type: \"number\" },  \r",
+                  "            userLocation: { type: \"string\" },\r",
+                  "            userTimeZone: { type: \"string\" },\r",
+                  "            userLinkedinUrl: { type: \"string\" },\r",
+                  "            userEduPg: { type: \"string\" },\r",
+                  "            userEduUg: { type: \"string\" },\r",
+                  "            userComments: { type: \"string\" },\r",
+                  "            userVisaStatus: { type: \"string\" },\r",
+                  "            userLoginEmail: { type: \"string\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema validation - Active Users\", function () {\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/activeUsers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "activeUsers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getUserswithRole",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Status check\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Get response\r",
+                  "let data = pm.response.json();\r",
+                  "\r",
+                  "// // Validate response is array\r",
+                  "// pm.test(\"Response is array\", function () {\r",
+                  "//     pm.expect(data).to.be.an(\"array\");\r",
+                  "// });\r",
+                  "\r",
+                  "// Validate not empty\r",
+                  "pm.test(\"Roles exist\", function () {\r",
+                  "    pm.expect(data.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "// Role validation\r",
+                  "pm.test(\"Valid roleIds\", function () {\r",
+                  "    data.forEach(role => {\r",
+                  "        pm.expect([\"R01\", \"R02\", \"R03\"]).to.include(role.roleId);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "// Schema validation\r",
+                  "pm.test(\"Schema is valid\", function () {\r",
+                  "    const schema = {\r",
+                  "        type: \"array\",\r",
+                  "        items: {\r",
+                  "            type: \"object\",\r",
+                  "            required: [\r",
+                  "                \"roleId\",\r",
+                  "                \"roleName\",\r",
+                  "                \"roleDesc\",\r",
+                  "                \"creationTime\",\r",
+                  "                \"lastModTime\"\r",
+                  "            ],\r",
+                  "            properties: {\r",
+                  "                roleId: { type: \"string\" },\r",
+                  "                roleName: { type: \"string\" },\r",
+                  "                roleDesc: { type: \"string\" },\r",
+                  "                creationTime: { type: [\"string\", \"number\"] }, \r",
+                  "                lastModTime: { type: [\"string\", \"number\"] }\r",
+                  "            }\r",
+                  "        }\r",
+                  "    };\r",
+                  "\r",
+                  "    pm.expect(data).to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "// Debug log\r",
+                  "console.log(\"Roles:\", data);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCountofAllUsers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let data = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Counts are valid\", function () {\r",
+                  "    data.forEach(item => {\r",
+                  "        pm.expect(item.count).to.be.at.least(0);\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "console.log(\"User Counts:\", data);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/byStatus?Id=all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "byStatus"
+              ],
+              "query": [
+                {
+                  "key": "Id",
+                  "value": "all"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users with Facets/Filters Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code is 200",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response time is less than 3000ms",
+                  "pm.test(\"Response time is less than 3000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "// 3. Response body contains a \"users\" key",
+                  "pm.test(\"Response body contains a 'users' key\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property(\"users\");",
+                  "});",
+                  "",
+                  "// 4. \"users\" is an array",
+                  "pm.test(\"'users' is an array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.users).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 5. Each user object has the required fields",
+                  "pm.test(\"Each user object has the required fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const requiredFields = [\"userId\", \"userFirstName\", \"userLastName\", \"userLoginEmail\", \"userVisaStatus\"];",
+                  "    jsonData.users.forEach(function (user) {",
+                  "        requiredFields.forEach(function (field) {",
+                  "            pm.expect(user).to.have.property(field);",
+                  "        });",
+                  "    });",
+                  "});",
+                  "",
+                  "// 6. userId values are non-empty strings",
+                  "pm.test(\"userId values are non-empty strings\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.users.forEach(function (user) {",
+                  "        pm.expect(user.userId).to.be.a(\"string\").and.to.not.be.empty;",
+                  "    });",
+                  "});",
+                  "",
+                  "// 7. userLoginEmail values match a basic email format (contain \"@\")",
+                  "pm.test(\"userLoginEmail values contain '@'\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.users.forEach(function (user) {",
+                  "        pm.expect(user.userLoginEmail).to.include(\"@\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// 8. Response schema is valid",
+                  "pm.test(\"Response schema is valid\", function () {",
+                  "    const schema = {",
+                  "        \"type\": \"object\",",
+                  "        \"properties\": {",
+                  "            \"users\": {",
+                  "                \"type\": \"array\",",
+                  "                \"items\": {",
+                  "                    \"type\": \"object\",",
+                  "                    \"properties\": {",
+                  "                        \"userId\":          { \"type\": \"string\" },",
+                  "                        \"userFirstName\":   { \"type\": \"string\" },",
+                  "                        \"userLastName\":    { \"type\": \"string\" },",
+                  "                        \"userMiddleName\":  { \"type\": \"string\" },",
+                  "                        \"userPhoneNumber\": { \"type\": \"string\" },",
+                  "                        \"userLocation\":    { \"type\": \"string\" },",
+                  "                        \"userTimeZone\":    { \"type\": \"string\" },",
+                  "                        \"userLinkedinUrl\": { \"type\": [\"string\", \"null\"] },",
+                  "                        \"userEduUg\":       { \"type\": [\"string\", \"null\"] },",
+                  "                        \"userEduPg\":       { \"type\": [\"string\", \"null\"] },",
+                  "                        \"userComments\":    { \"type\": [\"string\", \"null\"] },",
+                  "                        \"userVisaStatus\":  { \"type\": \"string\" },",
+                  "                        \"userLoginEmail\":  { \"type\": \"string\" }",
+                  "                    },",
+                  "                    \"required\": [\"userId\", \"userFirstName\", \"userLastName\", \"userPhoneNumber\", \"userLocation\", \"userTimeZone\", \"userVisaStatus\", \"userLoginEmail\"]",
+                  "                }",
+                  "            },",
+                  "            \"facets\": {",
+                  "                \"type\": \"object\",",
+                  "                \"properties\": {",
+                  "                    \"facetedFields\": {",
+                  "                        \"type\": \"array\",",
+                  "                        \"items\": {",
+                  "                            \"type\": \"object\",",
+                  "                            \"properties\": {",
+                  "                                \"displayName\": { \"type\": \"string\" },",
+                  "                                \"filterValues\": {",
+                  "                                    \"type\": \"array\",",
+                  "                                    \"items\": {",
+                  "                                        \"type\": \"object\",",
+                  "                                        \"properties\": {",
+                  "                                            \"count\": { \"type\": \"number\" },",
+                  "                                            \"name\":  { \"type\": \"string\" }",
+                  "                                        },",
+                  "                                        \"required\": [\"count\", \"name\"]",
+                  "                                    }",
+                  "                                }",
+                  "                            },",
+                  "                            \"required\": [\"displayName\", \"filterValues\"]",
+                  "                        }",
+                  "                    }",
+                  "                }",
+                  "            }",
+                  "        },",
+                  "        \"required\": [\"users\"]",
+                  "    };",
+                  "",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(tv4.validate(response, schema)).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/v2/users",
+              "host": [
+                "{{baseurl}}"
+              ],
+              "path": [
+                "v2",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUserByRoleId Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code is 200",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response time is less than 3000ms",
+                  "pm.test(\"Response time is less than 3000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "// 3. Response body is an array",
+                  "pm.test(\"Response body is an array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 4. Response array is not empty",
+                  "pm.test(\"Response array is not empty\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.length.above(0);",
+                  "});",
+                  "",
+                  "// 5. Each user object has the required fields",
+                  "pm.test(\"Each user object has the required fields: userId, userFirstName, userLastName, userLoginEmail\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(function (user) {",
+                  "        pm.expect(user).to.have.property(\"userId\");",
+                  "        pm.expect(user).to.have.property(\"userFirstName\");",
+                  "        pm.expect(user).to.have.property(\"userLastName\");",
+                  "        pm.expect(user).to.have.property(\"userLoginEmail\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// 6. Each userId starts with \"U\"",
+                  "pm.test(\"Each userId starts with 'U'\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(function (user) {",
+                  "        pm.expect(user.userId).to.match(/^U/);",
+                  "    });",
+                  "});",
+                  "",
+                  "// 7. Each userLoginEmail is a valid email format (contains \"@\" and \".\")",
+                  "pm.test(\"Each userLoginEmail is a valid email format\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(function (user) {",
+                  "        pm.expect(user.userLoginEmail).to.include(\"@\");",
+                  "        pm.expect(user.userLoginEmail).to.include(\".\");",
+                  "    });",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/users/roles/{{roleid}}",
+              "host": [
+                "{{baseurl}}"
+              ],
+              "path": [
+                "users",
+                "roles",
+                "{{roleid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUserBatchIdByUserId Copy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/users/user/{{userid}}",
+              "host": [
+                "{{baseurl}}"
+              ],
+              "path": [
+                "users",
+                "user",
+                "{{userid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUserDetailsByUserId Copy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/users/details/{{userid}}",
+              "host": [
+                "{{baseurl}}"
+              ],
+              "path": [
+                "users",
+                "details",
+                "{{userid}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "DeleteRequest",
+      "item": [
+        {
+          "name": "getEmailofActiveStatus Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let emails = pm.response.json();\r",
+                  "\r",
+                  "//Status check\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "//Schema validation \r",
+                  "const schema = {\r",
+                  "    type: \"array\",\r",
+                  "    items: {\r",
+                  "        type: \"string\"\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema validation - Email list\", function () {\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "// Check emails exist\r",
+                  "pm.test(\"Emails are present\", function () {\r",
+                  "    pm.expect(emails.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "console.log(\"Active User Emails:\", emails);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fetch-emails",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fetch-emails"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "// pm.sendRequest({\r",
+          "//     url: 'http://localhost:3000/update_user_testdata.json',\r",
+          "//     method: 'GET'\r",
+          "// }, function(err, res) {\r",
+          "//     if(err) {\r",
+          "//         console.log(\"Error reading file: \" + err);\r",
+          "//     } else {\r",
+          "//        // var testData = res.json();\r",
+          "//        var testData = JSON.parse(res.text());\r",
+          "//         console.log(\"Total rows in file: \" + testData.length);\r",
+          "        \r",
+          "\r",
+          "//         var index = parseInt(pm.environment.get(\"index\")||0);\r",
+          "//          console.log(\"Parsed index: \" + index);\r",
+          "        \r",
+          "//         var currentData = testData[index];\r",
+          "//         console.log(currentData.userComments);\r",
+          "//         pm.environment.set(\"testCase\", currentData.testCase);\r",
+          "// pm.environment.set(\"programName\", currentData.programName);\r",
+          "// console.log(\"ppppppppppppppppppppp\"+currentData.programName);\r",
+          "// console.log(pm.environment.get(\"programName\"))\r",
+          "// pm.environment.set(\"programDescription\", currentData.programDescription);\r",
+          "// pm.environment.set(\"programStatus\", currentData.programStatus);\r",
+          "// pm.environment.set(\"batchDescription\", currentData.batchDescription);\r",
+          "// pm.environment.set(\"batchName\", currentData.batchName);\r",
+          "// pm.environment.set(\"batchNoOfClasses\", currentData.batchNoOfClasses);\r",
+          "// pm.environment.set(\"batchStatus\", currentData.batchStatus);\r",
+          "\r",
+          "// pm.environment.set(\"classComments\", currentData.classComments);\r",
+          "// pm.environment.set(\"classDate\", currentData.classDate);\r",
+          "// pm.environment.set(\"classDescription\", currentData.classDescription);\r",
+          "// pm.environment.set(\"classNo\", currentData.classNo);\r",
+          "// pm.environment.set(\"classNotes\", currentData.classNotes);\r",
+          "// pm.environment.set(\"classRecordingPath\", currentData.classRecordingPath);\r",
+          "\r",
+          "// pm.environment.set(\"classTopic\", currentData.classTopic);\r",
+          "// pm.environment.set(\"classScheduledDates\", JSON.stringify(currentData.classScheduledDates));\r",
+          "// pm.environment.set(\"staffComments\", currentData.staffComments);\r",
+          "// pm.environment.set(\"staffEduPg\", currentData.staffEduPg);\r",
+          "// pm.environment.set(\"staffEduUg\", currentData.staffEduUg);\r",
+          "// pm.environment.set(\"staffFirstName\", currentData.staffFirstName);\r",
+          "// pm.environment.set(\"staffLastName\", currentData.staffLastName);\r",
+          "// pm.environment.set(\"staffMiddleName\", currentData.staffMiddleName);\r",
+          "// pm.environment.set(\"staffLinkedinUrl\", currentData.staffLinkedinUrl);\r",
+          "// pm.environment.set(\"staffLocation\", currentData.staffLocation);\r",
+          "// pm.environment.set(\"staffLoginEmail\", currentData.staffLoginEmail);\r",
+          "// pm.environment.set(\"staffPhoneNumber\", currentData.staffPhoneNumber);\r",
+          "// pm.environment.set(\"staffTimeZone\", currentData.staffTimeZone);\r",
+          "// pm.environment.set(\"staffVisaStatus\", currentData.staffVisaStatus);\r",
+          "// pm.environment.set(\"staffLoginStatus\", currentData.staffLoginStatus);\r",
+          "// pm.environment.set(\"staffroleId\", currentData.staffroleId);\r",
+          "// pm.environment.set(\"staffRoleStatus\", currentData.staffRoleStatus);\r",
+          "\r",
+          "\r",
+          "// pm.environment.set(\"userComments\", currentData.userComments);\r",
+          "// pm.environment.set(\"userEduPg\", currentData.userEduPg);\r",
+          "// pm.environment.set(\"userEduUg\", currentData.userEduUg);\r",
+          "// pm.environment.set(\"userFirstName\", currentData.userFirstName);\r",
+          "// pm.environment.set(\"userLastName\", currentData.userLastName);\r",
+          "// pm.environment.set(\"userMiddleName\", currentData.userMiddleName);\r",
+          "// pm.environment.set(\"userLinkedinUrl\", currentData.userLinkedinUrl);\r",
+          "// pm.environment.set(\"userLocation\", currentData.userLocation);\r",
+          "// pm.environment.set(\"userLoginEmail\", currentData.userLoginEmail);\r",
+          "// pm.environment.set(\"userPhoneNumber\", currentData.userPhoneNumber);\r",
+          "// pm.environment.set(\"userTimeZone\", currentData.userTimeZone);\r",
+          "// pm.environment.set(\"userVisaStatus\", currentData.userVisaStatus);\r",
+          "// pm.environment.set(\"userLoginStatus\", currentData.userLoginStatus);\r",
+          "// pm.environment.set(\"userroleId\", currentData.userroleId);\r",
+          "// pm.environment.set(\"userRoleStatus\", currentData.userRoleStatus);\r",
+          "// pm.environment.set(\"expectedStatus\", currentData.expectedStatus);\r",
+          "\r",
+          "        \r",
+          "//         console.log(\"Loaded: \" + currentData.userFirstName);\r",
+          "//     }\r",
+          "// });"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "// Move index to next row\r",
+          "//  var index = parseInt(pm.environment.get(\"index\") || 0); \r",
+          "//  index = index + 1; \r",
+          "//  pm.environment.set(\"index\", index);\r",
+          "//   console.log(\"Completed iteration, moving to index: \" + index);"
+        ]
+      }
+    }
+  ]
+}
